@@ -17,6 +17,8 @@
 		D8E884AC1D4B122500940E81 /* TwitterClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E884AB1D4B122500940E81 /* TwitterClient.swift */; };
 		D8E884AE1D4B160400940E81 /* Tweet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E884AD1D4B160400940E81 /* Tweet.swift */; };
 		D8E884B01D4B212700940E81 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E884AF1D4B212700940E81 /* User.swift */; };
+		D8FB41101D4C666F00272AA6 /* TimelineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FB410F1D4C666F00272AA6 /* TimelineViewController.swift */; };
+		D8FB41121D4C688600272AA6 /* TimelineViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FB41111D4C688600272AA6 /* TimelineViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +36,8 @@
 		D8E884AB1D4B122500940E81 /* TwitterClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterClient.swift; sourceTree = "<group>"; };
 		D8E884AD1D4B160400940E81 /* Tweet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tweet.swift; sourceTree = "<group>"; };
 		D8E884AF1D4B212700940E81 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		D8FB410F1D4C666F00272AA6 /* TimelineViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineViewController.swift; sourceTree = "<group>"; };
+		D8FB41111D4C688600272AA6 /* TimelineViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +106,7 @@
 		D8E884A51D4B100300940E81 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				D8FB41111D4C688600272AA6 /* TimelineViewCell.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -111,6 +116,7 @@
 			children = (
 				D8E884951D4B0F2D00940E81 /* ViewController.swift */,
 				D8E884A91D4B113500940E81 /* LoginViewController.swift */,
+				D8FB410F1D4C666F00272AA6 /* TimelineViewController.swift */,
 			);
 			name = "View Controller";
 			sourceTree = "<group>";
@@ -257,7 +263,9 @@
 				D8E884AC1D4B122500940E81 /* TwitterClient.swift in Sources */,
 				D8E884AE1D4B160400940E81 /* Tweet.swift in Sources */,
 				D8E884B01D4B212700940E81 /* User.swift in Sources */,
+				D8FB41121D4C688600272AA6 /* TimelineViewCell.swift in Sources */,
 				D8E884AA1D4B113500940E81 /* LoginViewController.swift in Sources */,
+				D8FB41101D4C666F00272AA6 /* TimelineViewController.swift in Sources */,
 				D8E884961D4B0F2D00940E81 /* ViewController.swift in Sources */,
 				D8E884941D4B0F2D00940E81 /* AppDelegate.swift in Sources */,
 			);

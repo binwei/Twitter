@@ -9,8 +9,8 @@
 import UIKit
 
 class User: NSObject {
-    var name: NSString?
-    var screenName: NSString?
+    var name: String?
+    var screenName: String?
     var profileUrl: NSURL?
     var tagLine: NSString?
     
@@ -19,8 +19,8 @@ class User: NSObject {
     init(dictionary: NSDictionary) {
         self.dictionary = dictionary
         
-        name = dictionary["name"] as? NSString
-        screenName = dictionary["screen_name"] as? NSString
+        name = dictionary["name"] as? String
+        screenName = dictionary["screen_name"] as? String
         
         if let profileUrlString = dictionary["profile_image_url_https"] as? String {
             profileUrl = NSURL(string: profileUrlString)
