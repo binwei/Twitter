@@ -31,6 +31,23 @@ class TimelineViewController: UIViewController, UITableViewDelegate, UITableView
         }) { (error:NSError) in
             NSLog("Failed to get timeline: \(error.localizedDescription)")
         }
+        
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refreshControlAction(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        timelineTableView.insertSubview(refreshControl, atIndex: 0)
+    }
+    
+    func refreshControlAction(refreshControl: UIRefreshControl) {
+        TwitterClient.sharedInstance.homeTimeline({ (tweets:[Tweet]) in
+            self.tweets = tweets
+            
+            self.timelineTableView.reloadData()
+            
+            refreshControl.endRefreshing()
+            print("Refreshing completed with \(self.tweets!.count) tweets")
+        }) { (error:NSError) in
+            NSLog("Failed to get timeline: \(error.localizedDescription)")
+        }
     }
     
     @IBAction func onSignOutButton(sender: UIBarButtonItem) {
@@ -56,9 +73,9 @@ class TimelineViewController: UIViewController, UITableViewDelegate, UITableView
         return cell
     }
     
-//    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-//        tableView.cellForRowAtIndexPath(indexPath)?.layoutSubviews()
-//    }
+    //    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    //        tableView.cellForRowAtIndexPath(indexPath)?.layoutSubviews()
+    //    }
     
     /*
      // MARK: - Navigation

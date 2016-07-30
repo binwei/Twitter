@@ -103,7 +103,7 @@
                                                                 <constraint firstAttribute="height" constant="16" id="mFY-oP-Gd6"/>
                                                             </constraints>
                                                         </imageView>
-                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5SG-Q9-fgF">
+                                                        <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5SG-Q9-fgF">
                                                             <rect key="frame" x="70" y="0.0" width="50" height="16"/>
                                                             <subviews>
                                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="retweet" translatesAutoresizingMaskIntoConstraints="NO" id="ONM-8A-v93">
@@ -116,11 +116,10 @@
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="19" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FE7-RQ-4p3">
                                                                     <rect key="frame" x="28" y="2" width="11.5" height="12"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                                                                    <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                                    <color key="textColor" red="0.46046270718232041" green="0.46046270718232041" blue="0.46046270718232041" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                             </subviews>
-                                                            <color key="backgroundColor" red="1" green="0.85663311880000004" blue="0.23300307210000001" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
                                                                 <constraint firstItem="FE7-RQ-4p3" firstAttribute="leading" secondItem="ONM-8A-v93" secondAttribute="trailing" constant="4" id="4QU-t6-5Iw"/>
                                                                 <constraint firstAttribute="height" constant="16" id="IFP-Dx-KbN"/>
@@ -130,7 +129,7 @@
                                                                 <constraint firstItem="ONM-8A-v93" firstAttribute="top" secondItem="5SG-Q9-fgF" secondAttribute="top" id="sec-si-rve"/>
                                                             </constraints>
                                                         </view>
-                                                        <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4zT-tZ-G1B">
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4zT-tZ-G1B">
                                                             <rect key="frame" x="174" y="0.0" width="50" height="16"/>
                                                             <subviews>
                                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="favorite" translatesAutoresizingMaskIntoConstraints="NO" id="d3p-Ix-kKb">
@@ -143,11 +142,10 @@
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ioo-hn-Eoh">
                                                                     <rect key="frame" x="32" y="2" width="6.5" height="12"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                                                                    <color key="textColor" red="1" green="0.85663311880000004" blue="0.23300307210000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                                    <color key="textColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                             </subviews>
-                                                            <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="16" id="9Cg-48-FgP"/>
                                                                 <constraint firstItem="d3p-Ix-kKb" firstAttribute="top" secondItem="4zT-tZ-G1B" secondAttribute="top" id="An1-Yd-BJm"/>
@@ -181,8 +179,11 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="contentTextLabel" destination="f5c-Ww-Wmh" id="S9n-9d-EMc"/>
+                                            <outlet property="elapsedTimeLabel" destination="daT-QD-1UZ" id="UzD-co-tAr"/>
+                                            <outlet property="favoriteCountLabel" destination="Ioo-hn-Eoh" id="ZjD-AP-aAc"/>
                                             <outlet property="nameLabel" destination="OpJ-HR-Fok" id="gwg-6T-UGZ"/>
                                             <outlet property="profileImageView" destination="REp-a6-KC5" id="RfQ-Yy-jyI"/>
+                                            <outlet property="retweetCountLabel" destination="FE7-RQ-4p3" id="wr7-b3-Put"/>
                                             <outlet property="screenNameLabel" destination="M1K-Th-sa0" id="yD9-VH-eLO"/>
                                             <outlet property="textLabel" destination="f5c-Ww-Wmh" id="lak-wA-nes"/>
                                         </connections>

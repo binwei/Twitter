@@ -19,6 +19,12 @@ class TimelineViewCell: UITableViewCell {
     
     @IBOutlet weak var contentTextLabel: UILabel!
     
+    @IBOutlet weak var retweetCountLabel: UILabel!
+    
+    @IBOutlet weak var favoriteCountLabel: UILabel!
+    
+    @IBOutlet weak var elapsedTimeLabel: UILabel!
+    
     var row: Int!
     
     var tweet: Tweet! {
@@ -31,7 +37,20 @@ class TimelineViewCell: UITableViewCell {
                 }
             }
             contentTextLabel.text = tweet.text
-
+            retweetCountLabel.text = "\(tweet.retweetCount)"
+            favoriteCountLabel.text = "\(tweet.favoriteCount)"
+            
+            let dateComponentsFormatter = NSDateComponentsFormatter()
+            dateComponentsFormatter.unitsStyle = NSDateComponentsFormatterUnitsStyle.Abbreviated
+            let timeInterval = NSDate().timeIntervalSinceDate(tweet.timestamp!)
+            if (timeInterval < 3600) {
+                let timeIntervalInMinutes = Int((timeInterval / 60))
+                elapsedTimeLabel.text = dateComponentsFormatter.stringFromTimeInterval(Double(timeIntervalInMinutes * 60))
+            } else {
+                let timeIntervalInHours = Int((timeInterval / 3600))
+                elapsedTimeLabel.text = dateComponentsFormatter.stringFromTimeInterval(Double(timeIntervalInHours * 3600))
+            }
+            
             configureLabelWidth()
             print("done calling didSet for \(row) \(nameLabel.text)")
         }
