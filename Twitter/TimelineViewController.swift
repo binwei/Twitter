@@ -73,18 +73,22 @@ class TimelineViewController: UIViewController, UITableViewDelegate, UITableView
         return cell
     }
     
-    //    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-    //        tableView.cellForRowAtIndexPath(indexPath)?.layoutSubviews()
-    //    }
+//    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+//    }
     
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
+    // MARK: - Navigation
     
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+        if ("tweetSegue" == segue.identifier) {
+            let tweetController = segue.destinationViewController as! TweetViewController
+            
+            let cell = sender as! TimelineViewCell
+            let indexPath = timelineTableView.indexPathForCell(cell)
+            
+            tweetController.tweet = tweets![(indexPath?.row)!]
+        }
+    }
 }
