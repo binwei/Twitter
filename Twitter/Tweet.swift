@@ -35,6 +35,7 @@ class Tweet: NSObject {
         if let retweetStatus = dictionary["retweet_status"] as? NSDictionary {
             if let retweetUserDictionary = retweetStatus["user"] as? NSDictionary {
                 self.retweetUser = User(dictionary: retweetUserDictionary)
+                print("Got retweet from \(retweetUser?.name) for \(user?.name): \(text)")
             }
         }
     }

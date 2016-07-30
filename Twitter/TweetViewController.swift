@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TweetViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class TweetViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, TweetCountsCellDelete {
     
     var tweet: Tweet?
     
@@ -34,7 +34,7 @@ class TweetViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 4
+        return 3
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -62,15 +62,32 @@ class TweetViewController: UIViewController, UITableViewDelegate, UITableViewDat
             cell.tweet = tweet
             
             return cell
-        case 2:
+        default:
             let cell = tableView.dequeueReusableCellWithIdentifier("tweetCountsCell", forIndexPath: indexPath) as! TweetCountsCell
             cell.retweetCountLabel.text = "\((tweet?.retweetCount)!)"
             cell.favoriteCountLabel.text = "\((tweet?.favoriteCount)!)"
+            
+            cell.delegate = self
             return cell
-        default:
-            return tableView.dequeueReusableCellWithIdentifier("tweetActionsCell", forIndexPath: indexPath)
         }
+    }
+    
+    func tweetCountsCell(tweetCountsCell: TweetCountsCell, didTweetAction tweetAction: TweetAction) {
+        print("\(tweetAction) requested")
         
+        switch tweetAction {
+        case .Retweet:
+            // TBD real work, for now just simulate retweet
+            tweet?.retweetCount += 1
+            
+        case .Favor:
+            tweet?.favoriteCount += 1
+            
+        default:
+            return
+        }
+
+        tweetTableView.reloadSections(NSIndexSet(index:2), withRowAnimation: UITableViewRowAnimation.Automatic)
     }
     
     /*
