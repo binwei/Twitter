@@ -22,7 +22,7 @@ class TimelineViewController: UIViewController, UITableViewDelegate, UITableView
         timelineTableView.delegate = self
         
         timelineTableView.rowHeight = UITableViewAutomaticDimension
-        timelineTableView.estimatedRowHeight = 100
+        timelineTableView.estimatedRowHeight = 120
         
         TwitterClient.sharedInstance.homeTimeline({ (tweets:[Tweet]) in
             self.tweets = tweets
@@ -50,6 +50,7 @@ class TimelineViewController: UIViewController, UITableViewDelegate, UITableView
         
         let cell = tableView.dequeueReusableCellWithIdentifier("TimelineViewCell", forIndexPath: indexPath) as! TimelineViewCell
         
+        cell.row = indexPath.row
         cell.tweet = tweets![indexPath.row]
         
         return cell
