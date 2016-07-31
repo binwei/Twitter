@@ -16,7 +16,17 @@ class Tweet: NSObject {
     var user: User?
     var retweetUser: User?
     
-    init(dictionary: NSDictionary) {
+    init(dictionary origDictionary: NSDictionary) {
+        var dictionary = origDictionary
+        
+        if let retweetStatus = origDictionary["retweeted_status"] as? NSDictionary {
+            if let userDictionary = origDictionary["user"] as? NSDictionary {
+                retweetUser = User(dictionary: userDictionary)
+            }
+            
+            dictionary = retweetStatus
+        }
+        
         text = dictionary["text"] as? String
         
         retweetCount = (dictionary["retweet_count"] as? Int) ?? 0
@@ -32,11 +42,8 @@ class Tweet: NSObject {
             user = User(dictionary: userDictionary)
         }
         
-        if let retweetStatus = dictionary["retweet_status"] as? NSDictionary {
-            if let retweetUserDictionary = retweetStatus["user"] as? NSDictionary {
-                self.retweetUser = User(dictionary: retweetUserDictionary)
-                print("Got retweet from \(retweetUser?.name) for \(user?.name): \(text)")
-            }
+        if let retweetUserName = retweetUser?.name {
+            print("Got retweet from \(retweetUserName) for \((user?.name)!): \((text)!)")
         }
     }
     

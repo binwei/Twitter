@@ -32,7 +32,7 @@ class TweetViewCell: UITableViewCell {
             tweetContentLabel.text = tweet.text
             
             let formatter = NSDateFormatter()
-            formatter.dateFormat = "EEE MMM d HH:mm y"
+            formatter.dateFormat = "HH:mm EEE MMM d y"
             timestampLabel.text = formatter.stringFromDate(tweet.timestamp!)
         }
     }

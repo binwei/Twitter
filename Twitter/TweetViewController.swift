@@ -54,7 +54,7 @@ class TweetViewController: UIViewController, UITableViewDelegate, UITableViewDat
         case 0:
             let cell = tableView.dequeueReusableCellWithIdentifier("retweetUserCell", forIndexPath: indexPath) as! RetweetUserCell
             
-            cell.retweetUserLabel.text = "\(tweet?.retweetUser?.name) retweeted"
+            cell.retweetUserLabel.text = "\((tweet?.retweetUser?.name)!) retweeted"
             
             return cell
         case 1:
