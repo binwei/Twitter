@@ -8,10 +8,12 @@
 
 import UIKit
 
-class TimelineViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class TimelineViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, TweetViewControllerDelegate {
     var tweets: [Tweet]?
     
     @IBOutlet weak var timelineTableView: UITableView!
+    
+    var needReloadAfterAppear  = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,6 +37,14 @@ class TimelineViewController: UIViewController, UITableViewDelegate, UITableView
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(refreshControlAction(_:)), forControlEvents: UIControlEvents.ValueChanged)
         timelineTableView.insertSubview(refreshControl, atIndex: 0)
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        print("viewWillAppear")
+        if (needReloadAfterAppear) {
+            timelineTableView.reloadData()
+            needReloadAfterAppear = false
+        }
     }
     
     func refreshControlAction(refreshControl: UIRefreshControl) {
@@ -73,9 +83,6 @@ class TimelineViewController: UIViewController, UITableViewDelegate, UITableView
         return cell
     }
     
-//    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-//    }
-    
     // MARK: - Navigation
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -88,7 +95,19 @@ class TimelineViewController: UIViewController, UITableViewDelegate, UITableView
             let cell = sender as! TimelineViewCell
             let indexPath = timelineTableView.indexPathForCell(cell)
             
-            tweetController.tweet = tweets![(indexPath?.row)!]
+            let tweet  = tweets![(indexPath?.row)!]
+            tweetController.tweet = tweet
+            tweetController.delegate = self
+            NSLog("show tweet \(tweet.idString)")
+        }
+    }
+    
+    func tweetViewController(tweetViewController: TweetViewController, didUpdateTweet tweet: Tweet) {
+        if let index = tweets?.indexOf({ (currentTweet: Tweet) -> Bool in
+            return currentTweet.idString == tweet.idString
+        }) {
+            tweets![index] = tweet
+            needReloadAfterAppear = true
         }
     }
 }

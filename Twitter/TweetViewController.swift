@@ -8,11 +8,17 @@
 
 import UIKit
 
+protocol TweetViewControllerDelegate: class {
+    func tweetViewController(tweetViewController: TweetViewController, didUpdateTweet tweet: Tweet)
+}
+
 class TweetViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, TweetCountsCellDelete {
     
     var tweet: Tweet?
     
     @IBOutlet weak var tweetTableView: UITableView!
+    
+    weak var delegate: TweetViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,17 +83,29 @@ class TweetViewController: UIViewController, UITableViewDelegate, UITableViewDat
         
         switch tweetAction {
         case .Retweet:
-            // TBD real work, for now just simulate retweet
-            tweet?.retweetCount += 1
+            TwitterClient.sharedInstance.retweet(tweet!, success: { (retweet:Tweet) in
+                self.tweet = retweet
+                self.tweetTableView.reloadData()
+                
+                self.delegate?.tweetViewController(self, didUpdateTweet: retweet)
+                }, failure: { (error) in
+                    // TBD add alert controller
+                    NSLog("retweet of \(self.tweet?.idString) by \((self.tweet!.user?.name)!) failed: \(error.localizedDescription)")
+            })
             
         case .Favor:
-            tweet?.favoriteCount += 1
+            TwitterClient.sharedInstance.favor(tweet!, success: { (updatedTweet: Tweet) in
+                self.tweet?.favoriteCount = updatedTweet.favoriteCount
+                self.tweetTableView.reloadData()
+                
+                self.delegate?.tweetViewController(self, didUpdateTweet: self.tweet!)
+                }, failure: { (error) in
+                    // TBD add alert controller
+                    NSLog("favor of \(self.tweet?.idString) by \((self.tweet!.user?.name)!) failed: \(error.localizedDescription)")
+            })
             
-        default:
-            return
+        default: break
         }
-
-        tweetTableView.reloadSections(NSIndexSet(index:2), withRowAnimation: UITableViewRowAnimation.Automatic)
     }
     
     /*

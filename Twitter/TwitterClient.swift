@@ -96,4 +96,32 @@ class TwitterClient: BDBOAuth1SessionManager {
             failure(error)
         }
     }
+    
+    func retweet(tweet: Tweet, success: (Tweet) -> (), failure: (NSError) -> ()) {
+        self.POST("/1.1/statuses/retweet/\((tweet.idString)!).json", parameters: nil, progress: nil, success: { (task: NSURLSessionDataTask, response) in
+            
+            let dictionary = response as! NSDictionary
+            let retweet = Tweet(dictionary: dictionary)
+            
+            NSLog("retweet by \(tweet.user?.name) success: \(retweet.retweetCount)")
+            
+            success(retweet)
+        }) { (task, error) in
+            failure(error)
+        }
+    }
+    
+    func favor(tweet: Tweet, success: (Tweet) -> (), failure: (NSError) -> ()) {
+        self.POST("/1.1/favorites/create.json?id=\((tweet.idString)!)&include_entities=false", parameters: nil, progress: nil, success: { (task: NSURLSessionDataTask, response) in
+            
+            let dictionary = response as! NSDictionary
+            let updatedTweet = Tweet(dictionary: dictionary)
+            
+            NSLog("favor of tweet by \((tweet.user?.name)!) success: \(updatedTweet.favoriteCount)")
+            
+            success(updatedTweet)
+        }) { (task, error) in
+            failure(error)
+        }
+    }
 }
