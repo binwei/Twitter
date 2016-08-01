@@ -79,8 +79,6 @@ class TweetViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     func tweetCountsCell(tweetCountsCell: TweetCountsCell, didTweetAction tweetAction: TweetAction) {
-        print("\(tweetAction) requested")
-        
         switch tweetAction {
         case .Retweet:
             TwitterClient.sharedInstance.retweet(tweet!, success: { (retweet:Tweet) in
@@ -104,18 +102,22 @@ class TweetViewController: UIViewController, UITableViewDelegate, UITableViewDat
                     NSLog("favor of \(self.tweet?.idString) by \((self.tweet!.user?.name)!) failed: \(error.localizedDescription)")
             })
             
-        default: break
+        case .Reply:
+            performSegueWithIdentifier("replyTweetSegue", sender: nil)
         }
     }
     
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
     
+    // MARK: - Navigation
+    
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+        if ("replyTweetSegue" == segue.identifier) {
+            let navigationController = segue.destinationViewController as! UINavigationController
+            let updateController = navigationController.topViewController as! UpdateViewController
+            updateController.userToReply = tweet!.user
+        }
+    }
 }

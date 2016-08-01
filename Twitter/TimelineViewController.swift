@@ -40,7 +40,6 @@ class TimelineViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     override func viewWillAppear(animated: Bool) {
-        print("viewWillAppear")
         if (needReloadAfterAppear) {
             timelineTableView.reloadData()
             needReloadAfterAppear = false
@@ -98,7 +97,6 @@ class TimelineViewController: UIViewController, UITableViewDelegate, UITableView
             let tweet  = tweets![(indexPath?.row)!]
             tweetController.tweet = tweet
             tweetController.delegate = self
-            NSLog("show tweet \(tweet.idString)")
         }
     }
     
