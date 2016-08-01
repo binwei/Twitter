@@ -124,4 +124,24 @@ class TwitterClient: BDBOAuth1SessionManager {
             failure(error)
         }
     }
+    
+    func updateStatus(status: String, inReplyTo replyTo: String?, success: (Tweet) -> (), failure: (NSError) -> ()) {
+        var parameters = Dictionary<String, String>()
+        parameters["status"] = status
+        if (nil != replyTo) {
+            parameters["in_reply_to_status_id"] = replyTo
+        }
+        
+        self.POST("1.1/statuses/update.json", parameters: parameters, progress: nil, success: { (task, response) in
+            let dictionary = response as! NSDictionary
+            let updatedTweet = Tweet(dictionary: dictionary)
+            
+            NSLog("tweet update status success: \(updatedTweet.favoriteCount)")
+            
+            success(updatedTweet)
+            
+        }) { (task, error) in
+            failure(error)
+        }
+    }
 }

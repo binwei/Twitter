@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TimelineViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, TweetViewControllerDelegate {
+class TimelineViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, TweetViewControllerDelegate, UpdateViewControllerDelegate {
     var tweets: [Tweet]?
     
     @IBOutlet weak var timelineTableView: UITableView!
@@ -97,6 +97,10 @@ class TimelineViewController: UIViewController, UITableViewDelegate, UITableView
             let tweet  = tweets![(indexPath?.row)!]
             tweetController.tweet = tweet
             tweetController.delegate = self
+        } else if ("newTweetSegue" == segue.identifier) {
+            let navigationController = segue.destinationViewController as! UINavigationController
+            let updateController = navigationController.topViewController as! UpdateViewController
+            updateController.delegate = self
         }
     }
     
@@ -107,5 +111,15 @@ class TimelineViewController: UIViewController, UITableViewDelegate, UITableView
             tweets![index] = tweet
             needReloadAfterAppear = true
         }
+    }
+    
+    func tweetViewController(tweetViewController: TweetViewController, didCreateTweet tweet: Tweet) {
+        tweets?.insert(tweet, atIndex: 0)
+        needReloadAfterAppear = true
+    }
+
+    func updateViewController(updateViewController: UpdateViewController, didUpdateTweet tweet: Tweet) {
+        tweets?.insert(tweet, atIndex: 0)
+        needReloadAfterAppear = true
     }
 }

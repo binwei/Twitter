@@ -8,14 +8,20 @@
 
 import UIKit
 
+protocol UpdateViewControllerDelegate: class {
+    func updateViewController(updateViewController: UpdateViewController, didUpdateTweet tweet: Tweet)
+}
+
 class UpdateViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     
     @IBOutlet weak var updateTableView: UITableView!
     
-    var userToReply: User?
+    var tweetToReply: Tweet?
     var textToSend: String?
     var wordCountLabel: UILabel?
     let characterCountLimit = 140
+    
+    weak var delegate: UpdateViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,7 +37,6 @@ class UpdateViewController: UIViewController, UITableViewDelegate, UITableViewDa
             let wordCountFrame = CGRect(x: navigationBar.frame.width/2, y: 0, width: navigationBar.frame.width/4, height: navigationBar.frame.height)
             
             let wordCountLabel = UILabel(frame: wordCountFrame)
-            wordCountLabel.text = "123"
             wordCountLabel.textAlignment = NSTextAlignment.Right
             wordCountLabel.alpha = 0.4
             wordCountLabel.font = UIFont(name: ".SFUIText-Regular", size: 14.0)
@@ -55,7 +60,7 @@ class UpdateViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if (section == 0 && nil == userToReply) {
+        if (section == 0 && nil == tweetToReply) {
             return 0
         }
         return 1
@@ -65,7 +70,7 @@ class UpdateViewController: UIViewController, UITableViewDelegate, UITableViewDa
         switch (indexPath.section) {
         case 0:
             let cell =  tableView.dequeueReusableCellWithIdentifier("replyToCell", forIndexPath: indexPath) as! ReplyToUserCell
-            cell.replyToUserLabel.text = "in reply to \(userToReply!.name!) @\(userToReply!.screenName!)"
+            cell.replyToUserLabel.text = "in reply to \(tweetToReply!.user!.name!) @\(tweetToReply!.user!.screenName!)"
             return cell
         case 1:
             return tableView.dequeueReusableCellWithIdentifier("currentUserCell", forIndexPath: indexPath)
@@ -79,12 +84,10 @@ class UpdateViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func textFieldDidEndEditing(textField: UITextField) {
-        print("calling textFieldDidEndEditing")
         textToSend = textField.text
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-        print("calling textFieldShouldReturn")
         textField.resignFirstResponder()
         return true
     }
@@ -98,8 +101,8 @@ class UpdateViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         var newLength = startingLength + lengthToAdd - lengthToReplace
         
-        if let screenName = userToReply?.screenName {
-            newLength += screenName.characters.count
+        if let screenName = tweetToReply?.user?.screenName {
+            newLength += screenName.characters.count + 2
         }
         
         if (newLength <= characterCountLimit) {
@@ -113,12 +116,22 @@ class UpdateViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     @IBAction func onTweetButton(sender: UIBarButtonItem) {
         if let content = textToSend {
-            if (nil == userToReply) {
-                print("About to create new tweet \(content)")
+            if (nil == tweetToReply) {
+                TwitterClient.sharedInstance.updateStatus(content, inReplyTo: nil, success: { (tweet) in
+                    self.delegate?.updateViewController(self, didUpdateTweet: tweet)
+                    }, failure: { (error) in
+                        NSLog("Failed to tweet: \(error.localizedDescription)")
+                })
             }
             else {
-                print("About to reply with @\(userToReply!.screenName) \(content)")
+                TwitterClient.sharedInstance.updateStatus("@\(tweetToReply!.user!.screenName!) \(content)", inReplyTo: tweetToReply?.idString, success: { (tweet) in
+                    self.delegate?.updateViewController(self, didUpdateTweet: tweet)
+                    }, failure: { (error) in
+                        NSLog("Failed to reply to tweet: \(error.localizedDescription)")
+                })
             }
+            
+            dismissViewControllerAnimated(true, completion: nil)
         }
     }
     

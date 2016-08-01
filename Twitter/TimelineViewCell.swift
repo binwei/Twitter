@@ -51,6 +51,11 @@ class TimelineViewCell: UITableViewCell {
                 elapsedTimeLabel.text = dateComponentsFormatter.stringFromTimeInterval(Double(timeIntervalInHours * 3600))
             }
             
+            
+            if let retweetUserName = tweet.retweetUser?.name {
+                print("Got retweet from \(retweetUserName) for \((tweet.user?.name)!) at \(row)")
+            }
+
             configureLabelWidth()
 //            print("done calling didSet for \(row) \(nameLabel.text)")
         }

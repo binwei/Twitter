@@ -43,10 +43,6 @@ class Tweet: NSObject {
         if let userDictionary = dictionary["user"] as? NSDictionary {
             user = User(dictionary: userDictionary)
         }
-        
-        if let retweetUserName = retweetUser?.name {
-            print("Got retweet from \(retweetUserName) for \((user?.name)!): \((text)!)")
-        }
     }
     
     class func tweetsFromArray(dictionaries: [NSDictionary]) -> [Tweet] {

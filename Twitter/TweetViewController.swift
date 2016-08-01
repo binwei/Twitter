@@ -8,11 +8,12 @@
 
 import UIKit
 
-protocol TweetViewControllerDelegate: class {
+@objc protocol TweetViewControllerDelegate: class {
     func tweetViewController(tweetViewController: TweetViewController, didUpdateTweet tweet: Tweet)
+    optional func tweetViewController(tweetViewController: TweetViewController, didCreateTweet tweet: Tweet)
 }
 
-class TweetViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, TweetCountsCellDelete {
+class TweetViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, TweetCountsCellDelete, UpdateViewControllerDelegate {
     
     var tweet: Tweet?
     
@@ -117,7 +118,12 @@ class TweetViewController: UIViewController, UITableViewDelegate, UITableViewDat
         if ("replyTweetSegue" == segue.identifier) {
             let navigationController = segue.destinationViewController as! UINavigationController
             let updateController = navigationController.topViewController as! UpdateViewController
-            updateController.userToReply = tweet!.user
+            updateController.delegate = self
+            updateController.tweetToReply = tweet
         }
+    }
+    
+    func updateViewController(updateViewController: UpdateViewController, didUpdateTweet tweet: Tweet) {
+        delegate?.tweetViewController?(self, didCreateTweet: tweet)
     }
 }
