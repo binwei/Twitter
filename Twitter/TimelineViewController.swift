@@ -120,6 +120,6 @@ class TimelineViewController: UIViewController, UITableViewDelegate, UITableView
 
     func updateViewController(updateViewController: UpdateViewController, didUpdateTweet tweet: Tweet) {
         tweets?.insert(tweet, atIndex: 0)
-        needReloadAfterAppear = true
+        timelineTableView.reloadData()
     }
 }
