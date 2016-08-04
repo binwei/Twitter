@@ -79,7 +79,17 @@ class TimelineViewController: UIViewController, UITableViewDelegate, UITableView
         cell.row = indexPath.row
         cell.tweet = tweets![indexPath.row]
         
+        let imageTap = UITapGestureRecognizer(target: self, action: #selector(self.doTweeterImageTap))
+        cell.profileImageView.addGestureRecognizer(imageTap)
+        
         return cell
+    }
+    
+    func doTweeterImageTap(sender: UITapGestureRecognizer) {
+        let location = sender.locationInView(timelineTableView)
+        let indexPath = timelineTableView.indexPathForRowAtPoint(location)
+        
+        performSegueWithIdentifier("profileSegue", sender: tweets![indexPath!.row])
     }
     
     // MARK: - Navigation
@@ -101,6 +111,9 @@ class TimelineViewController: UIViewController, UITableViewDelegate, UITableView
             let navigationController = segue.destinationViewController as! UINavigationController
             let updateController = navigationController.topViewController as! UpdateViewController
             updateController.delegate = self
+        } else if ("profileSegue" == segue.identifier) {
+            let profileController = segue.destinationViewController as!  ProfileViewController
+            profileController.tweet = sender as! Tweet
         }
     }
     
@@ -117,7 +130,7 @@ class TimelineViewController: UIViewController, UITableViewDelegate, UITableView
         tweets?.insert(tweet, atIndex: 0)
         needReloadAfterAppear = true
     }
-
+    
     func updateViewController(updateViewController: UpdateViewController, didUpdateTweet tweet: Tweet) {
         tweets?.insert(tweet, atIndex: 0)
         timelineTableView.reloadData()

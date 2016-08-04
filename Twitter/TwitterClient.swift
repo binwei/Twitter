@@ -96,7 +96,24 @@ class TwitterClient: BDBOAuth1SessionManager {
             failure(error)
         }
     }
-    
+
+    func userTimeline(user: User, success: ([Tweet] -> ()), failure: (NSError) -> ()) {
+        var parameters = Dictionary<String, String>()
+        parameters["user_id"] = user.idString
+        parameters["screen_name"] = user.screenName
+        
+        self.GET("1.1/statuses/user_timeline.json", parameters: parameters, progress: nil, success: { (task, response) in
+            let dictionaries = response as! [NSDictionary]
+            let tweets = Tweet.tweetsFromArray(dictionaries)
+            
+            NSLog("userTimeline success with \(tweets.count) tweets")
+            
+            success(tweets)
+        }) { (task, error) in
+            failure(error)
+        }
+    }
+
     func retweet(tweet: Tweet, success: (Tweet) -> (), failure: (NSError) -> ()) {
         self.POST("/1.1/statuses/retweet/\((tweet.idString)!).json", parameters: nil, progress: nil, success: { (task: NSURLSessionDataTask, response) in
             
