@@ -118,6 +118,9 @@ class UpdateViewController: UIViewController, UITableViewDelegate, UITableViewDa
         if let content = textToSend {
             if (nil == tweetToReply) {
                 TwitterClient.sharedInstance.updateStatus(content, inReplyTo: nil, success: { (tweet) in
+                    
+                    self.dismissViewControllerAnimated(true, completion: nil)
+                    
                     self.delegate?.updateViewController(self, didUpdateTweet: tweet)
                     }, failure: { (error) in
                         NSLog("Failed to tweet: \(error.localizedDescription)")
@@ -125,13 +128,14 @@ class UpdateViewController: UIViewController, UITableViewDelegate, UITableViewDa
             }
             else {
                 TwitterClient.sharedInstance.updateStatus("@\(tweetToReply!.user!.screenName!) \(content)", inReplyTo: tweetToReply?.idString, success: { (tweet) in
+                    
+                    self.dismissViewControllerAnimated(true, completion: nil)
+                    
                     self.delegate?.updateViewController(self, didUpdateTweet: tweet)
                     }, failure: { (error) in
                         NSLog("Failed to reply to tweet: \(error.localizedDescription)")
                 })
             }
-            
-            dismissViewControllerAnimated(true, completion: nil)
         }
     }
     
