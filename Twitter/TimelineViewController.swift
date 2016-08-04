@@ -89,7 +89,8 @@ class TimelineViewController: UIViewController, UITableViewDelegate, UITableView
         let location = sender.locationInView(timelineTableView)
         let indexPath = timelineTableView.indexPathForRowAtPoint(location)
         
-        performSegueWithIdentifier("profileSegue", sender: tweets![indexPath!.row])
+        let tweet = tweets![indexPath!.row]
+        performSegueWithIdentifier("profileSegue", sender: tweet.user)
     }
     
     // MARK: - Navigation
@@ -113,7 +114,7 @@ class TimelineViewController: UIViewController, UITableViewDelegate, UITableView
             updateController.delegate = self
         } else if ("profileSegue" == segue.identifier) {
             let profileController = segue.destinationViewController as!  ProfileViewController
-            profileController.tweet = sender as! Tweet
+            profileController.user = sender as? User
         }
     }
     

@@ -23,9 +23,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var headerHeightConstraint: NSLayoutConstraint!
     
-    var tweet: Tweet! {
+    var user: User? {
         didSet {
-            if let user = tweet.user {
+            if let user = user {
                 TwitterClient.sharedInstance.userTimeline(user, success: { (tweets) in
                     self.tweets = tweets
                     
