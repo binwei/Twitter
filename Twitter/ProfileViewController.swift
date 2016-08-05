@@ -21,7 +21,10 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var tagLineLabel: UILabel!
     
     @IBOutlet weak var headerView: UIView!
-    @IBOutlet weak var headerHeightConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var tweetsCountLabel: UILabel!
+    @IBOutlet weak var followingCountLabel: UILabel!
+    @IBOutlet weak var followersCountLabel: UILabel!
     
     var user: User? {
         didSet {
@@ -36,11 +39,31 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     self.screenNameLabel.text = "@\(user.screenName!)"
                     self.tagLineLabel.text = user.tagLine
                     
+                    print("followers cnt \(user.followersCount!) friends cnt \(user.friendsCount!) tweets cnt \(user.tweetsCount)")
+                    
+                    self.tweetsCountLabel.text = self.countText(user.tweetsCount!)
+                    self.followingCountLabel.text = self.countText(user.friendsCount!)
+                    self.followersCountLabel.text = self.countText(user.followersCount!)
+                    
                     self.navigationItem.title = user.name
                     }, failure: { (error) in
                         NSLog("Failed to get timeline: \(error.localizedDescription)")
                 })
             }
+        }
+    }
+    
+    private func countText(count: Int) -> String! {
+        let formatter = NSNumberFormatter()
+        formatter.numberStyle = .DecimalStyle
+        if (count < 10000) {
+            return formatter.stringFromNumber(count)
+        } else if (count < 1000000) {
+            formatter.maximumFractionDigits = 1
+            return "\(formatter.stringFromNumber(Double(count) / 1000)!)K"
+        } else {
+            formatter.maximumFractionDigits = 2
+            return "\(formatter.stringFromNumber(Double(count) / 1000000)!)M"
         }
     }
     
