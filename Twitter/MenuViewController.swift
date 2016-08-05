@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AFNetworking
 
 class MenuViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -51,6 +52,8 @@ class MenuViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        
         let navigationController = contentControllers[indexPath.row]
         
         if (indexPath.row == 0) {
@@ -66,6 +69,7 @@ class MenuViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         if (indexPath.row == 0) {
             cell.textLabel?.text = "Profile"
+            cell.imageView?.setImageWithURL((User.currentUser?.profileUrl)!)
             cell.detailTextLabel?.text = "Show Profile for currently logged in user"
         }
         else if (indexPath.row == 1){
