@@ -26,6 +26,10 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var followingCountLabel: UILabel!
     @IBOutlet weak var followersCountLabel: UILabel!
     
+    @IBOutlet weak var bannerImageView: UIImageView!
+    
+    @IBOutlet weak var profileImageTopConstraint: NSLayoutConstraint!
+    
     var user: User? {
         didSet {
             if let user = user {
@@ -39,11 +43,18 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     self.screenNameLabel.text = "@\(user.screenName!)"
                     self.tagLineLabel.text = user.tagLine
                     
-                    print("followers cnt \(user.followersCount!) friends cnt \(user.friendsCount!) tweets cnt \(user.tweetsCount)")
+                    print("\(user.tagLine ) followers cnt \(user.followersCount!) friends cnt \(user.friendsCount!) tweets cnt \(user.tweetsCount)")
                     
                     self.tweetsCountLabel.text = self.countText(user.tweetsCount!)
                     self.followingCountLabel.text = self.countText(user.friendsCount!)
                     self.followersCountLabel.text = self.countText(user.followersCount!)
+                    
+                    if let bannerImageUrl = user.profileBannerUrl {
+                        self.bannerImageView.setImageWithURL(bannerImageUrl)
+                        self.headerView.sendSubviewToBack(self.bannerImageView)
+                    } else {
+                        self.profileImageTopConstraint.constant = 8
+                    }
                     
                     self.navigationItem.title = user.name
                     }, failure: { (error) in
