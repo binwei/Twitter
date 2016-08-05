@@ -18,16 +18,14 @@ class HamburgerViewController: UIViewController {
     
     var menuController: UINavigationController! {
         didSet {
-            print("Got \(menuController)")
-            
             view.layoutIfNeeded()
+            
             self.menuView.addSubview(menuController.view)
         }
     }
     
     var contentController: UINavigationController! {
         didSet {
-            print("Got \(contentController) and its top view controller \(contentController.topViewController)")
             view.layoutIfNeeded()
             
             self.contentView.addSubview(contentController.view)
@@ -48,14 +46,14 @@ class HamburgerViewController: UIViewController {
     @IBAction func doPanView(sender: UIPanGestureRecognizer) {
         let velocity = sender.velocityInView(view)
         let translation = sender.translationInView(view)
-                
+        
         switch sender.state {
         case .Began:
             originalLeftMargin = leftContentAnchor.constant
         case .Changed:
             leftContentAnchor.constant = originalLeftMargin + translation.x
         case .Ended:
-            UIView.animateWithDuration(0.3, animations: {
+            UIView.animateWithDuration(0.6, animations: {
                 if (velocity.x > 0) {
                     self.leftContentAnchor.constant = self.view.frame.size.width - 100
                 }

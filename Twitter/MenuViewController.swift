@@ -32,9 +32,11 @@ class MenuViewController: UIViewController, UITableViewDelegate, UITableViewData
         let storyboard = navigationController?.storyboard
         let tweetsNavigationController = storyboard?.instantiateViewControllerWithIdentifier("tweetsNavigationController") as! UINavigationController
         let profileNavigationController = storyboard?.instantiateViewControllerWithIdentifier("profileNavigationController") as! UINavigationController
+        let mentionsNavigationController = storyboard?.instantiateViewControllerWithIdentifier("mentionsNavigationController") as! UINavigationController
         
         contentControllers.append(profileNavigationController)
         contentControllers.append(tweetsNavigationController)
+        contentControllers.append(mentionsNavigationController)
         
         defaultContentController = tweetsNavigationController
     }
@@ -45,7 +47,7 @@ class MenuViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return contentControllers.count
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -56,7 +58,6 @@ class MenuViewController: UIViewController, UITableViewDelegate, UITableViewData
             profileController.user = User.currentUser
         }
         hamburgerController.contentController = navigationController
-        
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -67,8 +68,10 @@ class MenuViewController: UIViewController, UITableViewDelegate, UITableViewData
             cell.textLabel?.text = "Profile"
             cell.detailTextLabel?.text = "Show Profile for currently logged in user"
         }
-        else {
+        else if (indexPath.row == 1){
             cell.textLabel?.text = "Home Timeline"
+        } else {
+            cell.textLabel?.text = "Mentions"
         }
         
         return cell
