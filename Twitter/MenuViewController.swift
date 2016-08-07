@@ -48,37 +48,45 @@ class MenuViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return contentControllers.count
+        return contentControllers.count + 1
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
-        let navigationController = contentControllers[indexPath.row]
-        
-        if (indexPath.row == 0) {
-            let profileController = navigationController.topViewController as! ProfileViewController
-            profileController.user = User.currentUser
+        if (indexPath.row > 0) {
+            let controllerIndex = indexPath.row - 1
+            let navigationController = contentControllers[controllerIndex]
+            if (controllerIndex == 0) {
+                let profileController = navigationController.topViewController as! ProfileViewController
+                profileController.user = User.currentUser
+            }
+            
+            hamburgerController.contentController = navigationController
         }
-        hamburgerController.contentController = navigationController
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
-        let cell = tableView.dequeueReusableCellWithIdentifier("MenuCell", forIndexPath: indexPath)
-        
         if (indexPath.row == 0) {
-            cell.textLabel?.text = "Profile"
-            cell.imageView?.setImageWithURL((User.currentUser?.profileUrl)!)
-            cell.detailTextLabel?.text = "Show Profile for currently logged in user"
+            return tableView.dequeueReusableCellWithIdentifier("currentUserCell", forIndexPath: indexPath) as! CurrentUserCell
         }
-        else if (indexPath.row == 1){
-            cell.textLabel?.text = "Home Timeline"
-        } else {
-            cell.textLabel?.text = "Mentions"
+        else {
+            let controllerIndex = indexPath.row - 1
+            let cell = tableView.dequeueReusableCellWithIdentifier("MenuCell", forIndexPath: indexPath)
+            
+            if (controllerIndex == 0) {
+                cell.textLabel?.text = "Profile"
+                cell.imageView?.image = UIImage(named: "profile")
+            }
+            else if (controllerIndex == 1){
+                cell.textLabel?.text = "Timeline"
+                cell.imageView?.image = UIImage(named: "home")
+            } else {
+                cell.textLabel?.text = "Mentions"
+                cell.imageView?.image = UIImage(named: "quote")
+            }
+            return cell
         }
-        
-        return cell
     }
     
     /*

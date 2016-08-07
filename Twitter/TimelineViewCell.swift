@@ -33,7 +33,16 @@ class TimelineViewCell: UITableViewCell {
                 nameLabel.text = user.name
                 screenNameLabel.text = "@\(user.screenName!)"
                 if let profileUrl = user.profileUrl {
-                    profileImageView.setImageWithURL(profileUrl)
+                    profileImageView.setImageWithURLRequest(NSURLRequest(URL: profileUrl), placeholderImage: nil, success: { (request, response, image) in
+                        self.profileImageView.alpha = 0.0
+                        self.profileImageView.image = image
+                        UIView.animateWithDuration(0.3, animations: {
+                            self.profileImageView.alpha = 1.0
+                        })
+                        }, failure: { (request, response, error) in
+                            self.profileImageView.image = nil
+                            NSLog("Failed to get image: \(error.localizedDescription)")
+                    })
                 }
             }
             contentTextLabel.text = tweet.text
@@ -55,9 +64,8 @@ class TimelineViewCell: UITableViewCell {
             if let retweetUserName = tweet.retweetUser?.name {
                 print("Got retweet from \(retweetUserName) for \((tweet.user?.name)!) at \(row)")
             }
-
+            
             configureLabelWidth()
-//            print("done calling didSet for \(row) \(nameLabel.text)")
         }
     }
     
@@ -69,15 +77,12 @@ class TimelineViewCell: UITableViewCell {
         profileImageView.clipsToBounds = true
         
         configureLabelWidth()
-//        print("done calling awakeFromNib for \(row) \(nameLabel.text)")
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         
         configureLabelWidth()
-        
-//        print("done calling layoutSubviews for \(row) \(nameLabel.text)")
     }
     
     override func setSelected(selected: Bool, animated: Bool) {
@@ -85,7 +90,6 @@ class TimelineViewCell: UITableViewCell {
         
         // Configure the view for the selected state
         configureLabelWidth()
-//        print("done calling setSelected = \(selected) \(row) \(nameLabel.text)")
     }
     
     // calls to functions above are interleaved, as cells come in and out of view

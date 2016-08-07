@@ -27,36 +27,46 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var followersCountLabel: UILabel!
     
     @IBOutlet weak var bannerImageView: UIImageView!
-    
     @IBOutlet weak var profileImageTopConstraint: NSLayoutConstraint!
     
     var user: User? {
         didSet {
             if let user = user {
+                view.layoutIfNeeded()
+                
+                self.profileImageView.setImageWithURL(user.profileUrl!)
+                self.nameLabel.text = user.name
+                self.screenNameLabel.text = "@\(user.screenName!)"
+                self.tagLineLabel.text = user.tagLine
+                
+                self.tweetsCountLabel.text = self.countText(user.tweetsCount!)
+                self.followingCountLabel.text = self.countText(user.friendsCount!)
+                self.followersCountLabel.text = self.countText(user.followersCount!)
+                
+                self.navigationItem.title = user.name
+                
+                if let bannerImageUrl = user.profileBannerUrl {
+                    let finalAlpha = bannerImageView.alpha
+                    self.headerView.sendSubviewToBack(self.bannerImageView)
+                    bannerImageView.setImageWithURLRequest(NSURLRequest(URL: bannerImageUrl), placeholderImage: nil, success: { (request, response, image) in
+                        self.bannerImageView.alpha = 0.0
+                        self.bannerImageView.image = image
+                        UIView.animateWithDuration(0.3, animations: {
+                            self.bannerImageView.alpha = finalAlpha
+                        })
+                        }, failure: { (request, response, error) in
+                            self.profileImageTopConstraint.constant = 8
+                            NSLog("Failed to get image: \(error.localizedDescription)")
+                    })
+                } else {
+                    self.profileImageTopConstraint.constant = 8
+                }
+
                 TwitterClient.sharedInstance.userTimeline(user, success: { (tweets) in
                     self.tweets = tweets
                     
                     self.profileTableView.reloadData()
                     
-                    self.profileImageView.setImageWithURL(user.profileUrl!)
-                    self.nameLabel.text = user.name
-                    self.screenNameLabel.text = "@\(user.screenName!)"
-                    self.tagLineLabel.text = user.tagLine
-                    
-                    print("\(user.tagLine ) followers cnt \(user.followersCount!) friends cnt \(user.friendsCount!) tweets cnt \(user.tweetsCount)")
-                    
-                    self.tweetsCountLabel.text = self.countText(user.tweetsCount!)
-                    self.followingCountLabel.text = self.countText(user.friendsCount!)
-                    self.followersCountLabel.text = self.countText(user.followersCount!)
-                    
-                    if let bannerImageUrl = user.profileBannerUrl {
-                        self.bannerImageView.setImageWithURL(bannerImageUrl)
-                        self.headerView.sendSubviewToBack(self.bannerImageView)
-                    } else {
-                        self.profileImageTopConstraint.constant = 8
-                    }
-                    
-                    self.navigationItem.title = user.name
                     }, failure: { (error) in
                         NSLog("Failed to get timeline: \(error.localizedDescription)")
                 })
