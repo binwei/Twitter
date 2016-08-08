@@ -34,10 +34,12 @@ class MenuViewController: UIViewController, UITableViewDelegate, UITableViewData
         let tweetsNavigationController = storyboard?.instantiateViewControllerWithIdentifier("tweetsNavigationController") as! UINavigationController
         let profileNavigationController = storyboard?.instantiateViewControllerWithIdentifier("profileNavigationController") as! UINavigationController
         let mentionsNavigationController = storyboard?.instantiateViewControllerWithIdentifier("mentionsNavigationController") as! UINavigationController
+        let favoritesNavigationController = storyboard?.instantiateViewControllerWithIdentifier("favoritesNavigationController") as! UINavigationController
         
         contentControllers.append(profileNavigationController)
         contentControllers.append(tweetsNavigationController)
         contentControllers.append(mentionsNavigationController)
+        contentControllers.append(favoritesNavigationController)
         
         defaultContentController = tweetsNavigationController
     }
@@ -74,6 +76,8 @@ class MenuViewController: UIViewController, UITableViewDelegate, UITableViewData
             let controllerIndex = indexPath.row - 1
             let cell = tableView.dequeueReusableCellWithIdentifier("MenuCell", forIndexPath: indexPath)
             
+            cell.imageView?.contentMode = .ScaleAspectFill
+            cell.imageView?.sizeToFit()
             if (controllerIndex == 0) {
                 cell.textLabel?.text = "Profile"
                 cell.imageView?.image = UIImage(named: "profile")
@@ -81,9 +85,12 @@ class MenuViewController: UIViewController, UITableViewDelegate, UITableViewData
             else if (controllerIndex == 1){
                 cell.textLabel?.text = "Timeline"
                 cell.imageView?.image = UIImage(named: "home")
-            } else {
+            } else if (controllerIndex == 2){
                 cell.textLabel?.text = "Mentions"
                 cell.imageView?.image = UIImage(named: "quote")
+            } else {
+                cell.textLabel?.text = "Favorites"
+                cell.imageView?.image = UIImage(named: "favorite")
             }
             return cell
         }

@@ -127,6 +127,19 @@ class TwitterClient: BDBOAuth1SessionManager {
         }
     }
 
+    func favorites(success: ([Tweet] -> ()), failure: (NSError) -> ()) {
+        self.GET("1.1/favorites/list.json", parameters: nil, progress: nil, success: { (task, response) in
+            let dictionaries = response as! [NSDictionary]
+            let tweets = Tweet.tweetsFromArray(dictionaries)
+            
+            NSLog("favorites success with \(tweets.count) tweets")
+            
+            success(tweets)
+        }) { (task, error) in
+            failure(error)
+        }
+    }
+    
     func retweet(tweet: Tweet, success: (Tweet) -> (), failure: (NSError) -> ()) {
         self.POST("/1.1/statuses/retweet/\((tweet.idString)!).json", parameters: nil, progress: nil, success: { (task: NSURLSessionDataTask, response) in
             

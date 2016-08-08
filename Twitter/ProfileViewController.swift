@@ -9,7 +9,7 @@
 import UIKit
 import AFNetworking
 
-class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate {
     
     @IBOutlet weak var profileTableView: UITableView!
     
@@ -29,6 +29,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var bannerImageView: UIImageView!
     @IBOutlet weak var profileImageTopConstraint: NSLayoutConstraint!
     
+    var bannerImageViewAlpha: CGFloat!
+    
     var user: User? {
         didSet {
             if let user = user {
@@ -44,15 +46,15 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 self.followersCountLabel.text = self.countText(user.followersCount!)
                 
                 self.navigationItem.title = user.name
+                self.bannerImageViewAlpha = bannerImageView.alpha
                 
                 if let bannerImageUrl = user.profileBannerUrl {
-                    let finalAlpha = bannerImageView.alpha
                     self.headerView.sendSubviewToBack(self.bannerImageView)
                     bannerImageView.setImageWithURLRequest(NSURLRequest(URL: bannerImageUrl), placeholderImage: nil, success: { (request, response, image) in
                         self.bannerImageView.alpha = 0.0
                         self.bannerImageView.image = image
                         UIView.animateWithDuration(0.3, animations: {
-                            self.bannerImageView.alpha = finalAlpha
+                            self.bannerImageView.alpha = self.bannerImageViewAlpha
                         })
                         }, failure: { (request, response, error) in
                             self.profileImageTopConstraint.constant = 8
@@ -61,7 +63,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 } else {
                     self.profileImageTopConstraint.constant = 8
                 }
-
+                
                 TwitterClient.sharedInstance.userTimeline(user, success: { (tweets) in
                     self.tweets = tweets
                     
@@ -97,6 +99,10 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         profileTableView.rowHeight = UITableViewAutomaticDimension
         profileTableView.estimatedRowHeight = 120
+        
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refreshControlAction(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        profileTableView.insertSubview(refreshControl, atIndex: 0)
     }
     
     override func didReceiveMemoryWarning() {
@@ -119,6 +125,31 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         cell.tweet = tweets![indexPath.row]
         
         return cell
+    }
+    
+    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if let indexPath = profileTableView.indexPathForRowAtPoint(profileTableView.contentOffset) {
+            bannerImageView.alpha = bannerImageViewAlpha * (1.0 - CGFloat(indexPath.row) / CGFloat((tweets?.count)!))
+        }
+    }
+    
+    func refreshControlAction(refreshControl: UIRefreshControl) {
+        TwitterClient.sharedInstance.userTimeline(user!, success: { (tweets) in
+            self.tweets = tweets
+            
+            self.profileTableView.reloadData()
+            
+            refreshControl.endRefreshing()
+            print("Refreshing completed with \(self.tweets!.count) tweets")
+
+            self.bannerImageView.alpha = 0.0
+
+            UIView.animateWithDuration(0.6, animations: {
+                self.bannerImageView.alpha = self.bannerImageViewAlpha
+            })
+            }, failure: { (error) in
+                NSLog("Failed to get timeline: \(error.localizedDescription)")
+        })
     }
     
     /*

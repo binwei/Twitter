@@ -12,6 +12,7 @@
 		D8045E551D4D632A00B09EDC /* TweetViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8045E541D4D632A00B09EDC /* TweetViewCell.swift */; };
 		D8045E571D4D634200B09EDC /* RetweetUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8045E561D4D634200B09EDC /* RetweetUserCell.swift */; };
 		D8045E591D4D635600B09EDC /* TweetCountsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8045E581D4D635600B09EDC /* TweetCountsCell.swift */; };
+		D81DA7C41D580F6300F01C3D /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81DA7C31D580F6300F01C3D /* FavoritesViewController.swift */; };
 		D84A40C51D544A41003A7AD6 /* MentionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D84A40C41D544A41003A7AD6 /* MentionsViewController.swift */; };
 		D852E27B1D4ED86200119045 /* UpdateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D852E27A1D4ED86200119045 /* UpdateViewController.swift */; };
 		D852E27D1D4EEA0A00119045 /* CurrentUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D852E27C1D4EEA0A00119045 /* CurrentUserCell.swift */; };
@@ -40,6 +41,7 @@
 		D8045E541D4D632A00B09EDC /* TweetViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TweetViewCell.swift; sourceTree = "<group>"; };
 		D8045E561D4D634200B09EDC /* RetweetUserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RetweetUserCell.swift; sourceTree = "<group>"; };
 		D8045E581D4D635600B09EDC /* TweetCountsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TweetCountsCell.swift; sourceTree = "<group>"; };
+		D81DA7C31D580F6300F01C3D /* FavoritesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
 		D84A40C41D544A41003A7AD6 /* MentionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MentionsViewController.swift; sourceTree = "<group>"; };
 		D852E27A1D4ED86200119045 /* UpdateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateViewController.swift; sourceTree = "<group>"; };
 		D852E27C1D4EEA0A00119045 /* CurrentUserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentUserCell.swift; sourceTree = "<group>"; };
@@ -150,6 +152,7 @@
 				D889FC401D53A77D00F4FDB2 /* HamburgerViewController.swift */,
 				D889FC421D53A79200F4FDB2 /* MenuViewController.swift */,
 				D84A40C41D544A41003A7AD6 /* MentionsViewController.swift */,
+				D81DA7C31D580F6300F01C3D /* FavoritesViewController.swift */,
 			);
 			name = "View Controller";
 			sourceTree = "<group>";
@@ -311,6 +314,7 @@
 				D8FB41101D4C666F00272AA6 /* TimelineViewController.swift in Sources */,
 				D8E884941D4B0F2D00940E81 /* AppDelegate.swift in Sources */,
 				D852E2811D4EEA3900119045 /* TweetUpdateCell.swift in Sources */,
+				D81DA7C41D580F6300F01C3D /* FavoritesViewController.swift in Sources */,
 				D852E27B1D4ED86200119045 /* UpdateViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
